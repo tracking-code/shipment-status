@@ -24,7 +24,7 @@
 
     .card {
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       background: #ffffff;
       border-radius: 14px;
       overflow: hidden;
@@ -58,6 +58,7 @@
     .header p {
       font-size: 0.85rem;
       color: #cbd5e1;
+      line-height: 1.4;
     }
 
     .body {
@@ -115,6 +116,7 @@
       color: #b45309;
       font-weight: 600;
       margin-bottom: 14px;
+      line-height: 1.4;
     }
 
     .btn {
@@ -139,21 +141,30 @@
       font-weight: 600;
       color: #334155;
       min-height: 20px;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="header">
-      <div class="badge">Payment Incomplete</div>
+      <div class="badge">Pending Balance Confirmation</div>
       <h1>Shipment Tracking — Robert Bliven</h1>
-      <p>Deposit recorded; remaining balance pending completion</p>
+      <p>Destination: 610 N Lake St, Carlsbad • Pending dispatch once balance is confirmed</p>
     </div>
 
     <div class="body">
       <div class="row">
         <span class="label">Recipient</span>
         <span class="value">Robert Bliven</span>
+      </div>
+      <div class="row">
+        <span class="label">Destination</span>
+        <span class="value">610 N Lake St, Carlsbad</span>
+      </div>
+      <div class="row">
+        <span class="label">Delivery Status</span>
+        <span class="value" id="deliveryStatusText">In transit / Pending to leave as soon as balance is confirmed</span>
       </div>
       <div class="row">
         <span class="label">Deposit Received</span>
@@ -167,7 +178,9 @@
       <div class="deposit-box">
         <div class="deposit-title">$125.00 Deposited</div>
         <div class="deposit-amount">$125.00</div>
-        <div class="status-note" id="incompleteNote">Payment is not yet complete. Select Complete Payment below to update status.</div>
+        <div class="status-note" id="incompleteNote">
+          $125.00 deposited; payment is not yet complete. Delivery is pending to leave for 610 N Lake St, Carlsbad as soon as balance is confirmed.
+        </div>
         <button class="btn" onclick="completePayment()">Complete Payment</button>
         <div class="msg" id="actionMsg"></div>
       </div>
@@ -177,9 +190,10 @@
   <script>
     function completePayment() {
       document.getElementById("paymentStatusText").textContent = "Complete Payment (Updated)";
-      document.getElementById("incompleteNote").textContent = "Payment marked as complete on this tracking page.";
+      document.getElementById("deliveryStatusText").textContent = "In Transit — Scheduled to leave for 610 N Lake St, Carlsbad";
+      document.getElementById("incompleteNote").textContent = "Complete Payment selected. Ready for dispatch / transit to 610 N Lake St, Carlsbad.";
       document.getElementById("incompleteNote").style.color = "#047857";
-      document.getElementById("actionMsg").textContent = "Status updated: Complete Payment.";
+      document.getElementById("actionMsg").textContent = "Updated: Complete Payment recorded for Robert Bliven.";
     }
   </script>
 </body>
