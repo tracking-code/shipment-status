@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Express Delivery — Track Shipment #TRK-84920419</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shipment & Payment Status — Robert Bliven</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,380 +13,174 @@
     }
 
     body {
-      background-color: #f1f5f9;
-      background-image: linear-gradient(rgba(241, 245, 249, 0.90), rgba(241, 245, 249, 0.90)), url('IMG_1732.jpeg');
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: min(620px, 90vw) auto;
-      background-attachment: fixed;
-      color: #1e293b;
+      background: #0f172a;
+      color: #0f172a;
+      min-height: 100vh;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
     }
 
-    .tracking-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(2px);
+    .card {
       width: 100%;
-      max-width: 650px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-      border: 1px solid rgba(226, 232, 240, 0.85);
-    }
-
-    .brand-bar {
+      max-width: 520px;
       background: #ffffff;
-      padding: 20px 30px;
-      border-bottom: 3px solid #dc2626;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
     }
 
-    .brand-logo {
-      height: 68px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    .support-tag {
-      text-align: right;
-      font-size: 0.8rem;
-      color: #64748b;
-    }
-
-    .support-tag strong {
-      display: block;
-      color: #0f172a;
-      font-size: 0.9rem;
-    }
-
-    .shipment-header {
-      background: #0f172a;
+    .header {
+      background: #1e293b;
       color: #ffffff;
-      padding: 18px 30px;
+      padding: 20px 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    .body {
+      padding: 24px;
+    }
+
+    .row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
       gap: 12px;
     }
 
-    .tracking-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #94a3b8;
-    }
-
-    .tracking-number {
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      margin-top: 2px;
-    }
-
-    .status-badge {
-      background: #fee2e2;
-      color: #b91c1c;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .content {
-      padding: 30px;
-    }
-
-    .section {
-      margin-bottom: 24px;
-    }
-
     .label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-size: 0.85rem;
       color: #64748b;
       font-weight: 600;
-      margin-bottom: 6px;
     }
 
     .value {
-      font-size: 1rem;
-      color: #0f172a;
-      line-height: 1.5;
-    }
-
-    .progress-container {
-      margin: 28px 0;
-    }
-
-    .progress-steps {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-    }
-
-    .progress-steps::before {
-      content: "";
-      position: absolute;
-      top: 12px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: #e2e8f0;
-      z-index: 1;
-    }
-
-    .progress-line {
-      position: absolute;
-      top: 12px;
-      left: 0;
-      width: 50%;
-      height: 3px;
-      background: #dc2626;
-      z-index: 2;
-    }
-
-    .step {
-      position: relative;
-      z-index: 3;
-      text-align: center;
-      width: 33.33%;
-    }
-
-    .step-dot {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #e2e8f0;
-      margin: 0 auto 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: #64748b;
-    }
-
-    .step.completed .step-dot {
-      background: #10b981;
-      color: #fff;
-    }
-
-    .step.hold .step-dot {
-      background: #dc2626;
-      color: #fff;
-      box-shadow: 0 0 0 4px #fee2e2;
-    }
-
-    .step-text {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #334155;
-    }
-
-    .payment-alert {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      border-left: 4px solid #dc2626;
-      padding: 16px 18px;
-      border-radius: 0 8px 8px 0;
-      margin-bottom: 24px;
-    }
-
-    .payment-alert-title {
+      font-size: 0.92rem;
       font-weight: 700;
-      color: #991b1b;
-      margin-bottom: 4px;
-      font-size: 0.95rem;
+      color: #0f172a;
+      text-align: right;
     }
 
-    .payment-alert-desc {
-      font-size: 0.9rem;
-      color: #7f1d1d;
-      line-height: 1.5;
+    .deposit-box {
+      margin-top: 18px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 16px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 20px 0;
-      border-top: 1px solid #e2e8f0;
-      border-bottom: 1px solid #e2e8f0;
-      margin-bottom: 24px;
-    }
-
-    .history-title {
-      font-size: 0.85rem;
+    .deposit-title {
+      font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #475569;
+      letter-spacing: 0.04em;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .deposit-amount {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f766e;
+      margin-bottom: 4px;
+    }
+
+    .status-note {
+      font-size: 0.84rem;
+      color: #b45309;
+      font-weight: 600;
       margin-bottom: 14px;
     }
 
-    .timeline {
-      border-left: 2px solid #cbd5e1;
-      margin-left: 8px;
-      padding-left: 18px;
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      background: #0f766e;
+      color: #ffffff;
+      cursor: pointer;
     }
 
-    .timeline-item {
-      position: relative;
-      margin-bottom: 16px;
+    .btn:hover {
+      background: #115e59;
     }
 
-    .timeline-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: -24px;
-      top: 5px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #94a3b8;
-    }
-
-    .timeline-item.alert::before {
-      background: #dc2626;
-    }
-
-    .timeline-status {
+    .msg {
+      margin-top: 12px;
+      font-size: 0.85rem;
       font-weight: 600;
-      font-size: 0.9rem;
-      color: #0f172a;
-    }
-
-    .timeline-meta {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-top: 2px;
-    }
-
-    .footer {
-      background: #f8fafc;
-      padding: 14px 30px;
-      border-top: 1px solid #e2e8f0;
-      text-align: center;
-      font-size: 0.75rem;
-      color: #64748b;
-    }
-
-    @media (max-width: 520px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      .brand-bar {
-        justify-content: center;
-        text-align: center;
-      }
-      .support-tag {
-        text-align: center;
-      }
+      color: #334155;
+      min-height: 20px;
     }
   </style>
 </head>
 <body>
-
-  <div class="tracking-card">
-    <div class="brand-bar">
-      <img src="IMG_1732.jpeg" alt="Express Delivery Logo" class="brand-logo">
-      <div class="support-tag">
-        <strong>Express Priority Logistics</strong>
-        24/7 Automated Shipment Portal
-      </div>
+  <div class="card">
+    <div class="header">
+      <div class="badge">Payment Incomplete</div>
+      <h1>Shipment Tracking — Robert Bliven</h1>
+      <p>Deposit recorded; remaining balance pending completion</p>
     </div>
 
-    <div class="shipment-header">
-      <div>
-        <div class="tracking-label">Tracking Number</div>
-        <div class="tracking-number">#TRK-84920419</div>
+    <div class="body">
+      <div class="row">
+        <span class="label">Recipient</span>
+        <span class="value">Robert Bliven</span>
       </div>
-      <div class="status-badge">Payment Incomplete</div>
-    </div>
-
-    <div class="content">
-      <div class="section">
-        <div class="label">Package Description</div>
-        <div class="value"><strong>Standard Priority Parcel</strong></div>
+      <div class="row">
+        <span class="label">Deposit Received</span>
+        <span class="value">$125.00 Deposited</span>
       </div>
-
-      <div class="progress-container">
-        <div class="progress-steps">
-          <div class="progress-line"></div>
-          <div class="step completed">
-            <div class="step-dot">✓</div>
-            <div class="step-text">Order Processed</div>
-          </div>
-          <div class="step hold">
-            <div class="step-dot">!</div>
-            <div class="step-text">Payment Incomplete</div>
-          </div>
-          <div class="step">
-            <div class="step-dot">3</div>
-            <div class="step-text">Delivered</div>
-          </div>
-        </div>
+      <div class="row">
+        <span class="label">Payment Status</span>
+        <span class="value" id="paymentStatusText">Incomplete</span>
       </div>
 
-      <div class="payment-alert">
-        <div class="payment-alert-title">Delivery Pending — Payment Incomplete</div>
-        <div class="payment-alert-desc">
-          Your package has arrived at the regional distribution hub, but final carrier dispatch is currently on hold due to an incomplete payment balance. Delivery will resume once payment is finalized.
-        </div>
+      <div class="deposit-box">
+        <div class="deposit-title">$125.00 Deposited</div>
+        <div class="deposit-amount">$125.00</div>
+        <div class="status-note" id="incompleteNote">Payment is not yet complete. Select Complete Payment below to update status.</div>
+        <button class="btn" onclick="completePayment()">Complete Payment</button>
+        <div class="msg" id="actionMsg"></div>
       </div>
-
-      <div class="grid">
-        <div>
-          <div class="label">Recipient Full Name</div>
-          <div class="value"><strong>Robert Bliven</strong></div>
-        </div>
-
-        <div>
-          <div class="label">Delivery Address</div>
-          <div class="value">
-            610 N Lake St<br>
-            Carlsbad, NM 88220
-          </div>
-        </div>
-      </div>
-
-      <div class="history-title">Shipment Scan History</div>
-      <div class="timeline">
-        <div class="timeline-item alert">
-          <div class="timeline-status">Hold Placed — Payment Incomplete</div>
-          <div class="timeline-meta">Regional Distribution Center • Awaiting Balance Clearance</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-status">Arrived at Sorting Facility</div>
-          <div class="timeline-meta">Regional Distribution Center • In Transit</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-status">Shipment Information Received</div>
-          <div class="timeline-meta">Origin Dispatch Hub • Label Created</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      Express Delivery Services • Faster • Safer • Always On Time
     </div>
   </div>
 
+  <script>
+    function completePayment() {
+      document.getElementById("paymentStatusText").textContent = "Complete Payment (Updated)";
+      document.getElementById("incompleteNote").textContent = "Payment marked as complete on this tracking page.";
+      document.getElementById("incompleteNote").style.color = "#047857";
+      document.getElementById("actionMsg").textContent = "Status updated: Complete Payment.";
+    }
+  </script>
 </body>
 </html>
