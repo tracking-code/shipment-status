@@ -14,10 +14,10 @@
 
     body {
       background-color: #f1f5f9;
-      background-image: linear-gradient(rgba(241, 245, 249, 0.94), rgba(241, 245, 249, 0.94)), url('logo.jpg');
+      background-image: linear-gradient(rgba(241, 245, 249, 0.90), rgba(241, 245, 249, 0.90)), url('logo.jpg');
       background-repeat: no-repeat;
-      background-position: center 30%;
-      background-size: 550px auto;
+      background-position: center center;
+      background-size: min(620px, 90vw) auto;
       background-attachment: fixed;
       color: #1e293b;
       display: flex;
@@ -28,14 +28,14 @@
     }
 
     .tracking-card {
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(2px);
       width: 100%;
       max-width: 650px;
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      border: 1px solid rgba(226, 232, 240, 0.8);
+      border: 1px solid rgba(226, 232, 240, 0.85);
     }
 
     .brand-bar {
@@ -359,7 +359,10 @@
 
         <div>
           <div class="label">Delivery Address</div>
-          <div class="value">610 N Lake St</div>
+          <div class="value">
+            610 N Lake St<br>
+            Carlsbad, NM 88220
+          </div>
         </div>
       </div>
 
