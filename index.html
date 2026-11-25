@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shipment Tracking - #TRK-84920419</title>
+  <title>Express Delivery — Track Shipment #TRK-84920419</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,8 +13,8 @@
     }
 
     body {
-      background-color: #f4f6f9;
-      color: #333;
+      background-color: #f1f5f9;
+      color: #1e293b;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -25,39 +25,76 @@
     .tracking-card {
       background: #ffffff;
       width: 100%;
-      max-width: 620px;
+      max-width: 650px;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
       overflow: hidden;
+      border: 1px solid #e2e8f0;
     }
 
-    .header {
-      background: #1e293b;
-      color: #ffffff;
-      padding: 24px 30px;
+    /* Brand Header matching the white logo background */
+    .brand-bar {
+      background: #ffffff;
+      padding: 20px 30px;
+      border-bottom: 3px solid #dc2626;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
-    .header h1 {
-      font-size: 1.25rem;
-      font-weight: 600;
+    .brand-logo {
+      height: 68px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .support-tag {
+      text-align: right;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .support-tag strong {
+      display: block;
+      color: #0f172a;
+      font-size: 0.9rem;
+    }
+
+    /* Shipment Sub-Header */
+    .shipment-header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tracking-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
     }
 
     .tracking-number {
-      font-size: 0.875rem;
-      color: #94a3b8;
-      margin-top: 4px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
     }
 
     .status-badge {
-      background: #fef3c7;
-      color: #b45309;
-      padding: 6px 12px;
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 6px 14px;
       border-radius: 9999px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.8rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -68,10 +105,6 @@
 
     .section {
       margin-bottom: 24px;
-    }
-
-    .section:last-child {
-      margin-bottom: 0;
     }
 
     .label {
@@ -87,35 +120,6 @@
       font-size: 1rem;
       color: #0f172a;
       line-height: 1.5;
-    }
-
-    .status-box {
-      background: #f8fafc;
-      border-left: 4px solid #f59e0b;
-      padding: 16px;
-      border-radius: 0 8px 8px 0;
-      margin-bottom: 24px;
-    }
-
-    .status-box-title {
-      font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 4px;
-      font-size: 0.95rem;
-    }
-
-    .status-box-desc {
-      font-size: 0.9rem;
-      color: #475569;
-      line-height: 1.5;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #e2e8f0;
     }
 
     /* Progress Tracker */
@@ -146,7 +150,7 @@
       left: 0;
       width: 50%;
       height: 3px;
-      background: #f59e0b;
+      background: #dc2626;
       z-index: 2;
     }
 
@@ -176,26 +180,123 @@
       color: #fff;
     }
 
-    .step.active .step-dot {
-      background: #f59e0b;
+    .step.hold .step-dot {
+      background: #dc2626;
       color: #fff;
-      box-shadow: 0 0 0 4px #fef3c7;
+      box-shadow: 0 0 0 4px #fee2e2;
     }
 
     .step-text {
       font-size: 0.8rem;
-      font-weight: 500;
-      color: #475569;
+      font-weight: 600;
+      color: #334155;
     }
 
-    @media (max-width: 480px) {
+    /* Payment Alert Banner */
+    .payment-alert {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
+      padding: 16px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 24px;
+    }
+
+    .payment-alert-title {
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    .payment-alert-desc {
+      font-size: 0.9rem;
+      color: #7f1d1d;
+      line-height: 1.5;
+    }
+
+    /* Recipient & Package Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px 0;
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 24px;
+    }
+
+    /* Tracking History Log */
+    .history-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #475569;
+      margin-bottom: 14px;
+    }
+
+    .timeline {
+      border-left: 2px solid #cbd5e1;
+      margin-left: 8px;
+      padding-left: 18px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -24px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .timeline-item.alert::before {
+      background: #dc2626;
+    }
+
+    .timeline-status {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0f172a;
+    }
+
+    .timeline-meta {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .footer {
+      background: #f8fafc;
+      padding: 14px 30px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    @media (max-width: 520px) {
       .grid {
         grid-template-columns: 1fr;
       }
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+      .brand-bar {
+        justify-content: center;
+        text-align: center;
+      }
+      .support-tag {
+        text-align: center;
       }
     }
   </style>
@@ -203,18 +304,28 @@
 <body>
 
   <div class="tracking-card">
-    <div class="header">
-      <div>
-        <h1>Package Tracking</h1>
-        <div class="tracking-number">Tracking ID: #TRK-84920419</div>
+    <!-- Top Brand Header with Logo -->
+    <div class="brand-bar">
+      <img src="logo.jpg" alt="Express Delivery Logo" class="brand-logo">
+      <div class="support-tag">
+        <strong>Express Priority Logistics</strong>
+        24/7 Automated Shipment Portal
       </div>
-      <div class="status-badge">Delivery Pending</div>
+    </div>
+
+    <!-- Tracking ID & Status Header -->
+    <div class="shipment-header">
+      <div>
+        <div class="tracking-label">Tracking Number</div>
+        <div class="tracking-number">#TRK-84920419</div>
+      </div>
+      <div class="status-badge">Payment Incomplete</div>
     </div>
 
     <div class="content">
-      <!-- Package Information -->
+      <!-- Package Name -->
       <div class="section">
-        <div class="label">Package Name</div>
+        <div class="label">Package Description</div>
         <div class="value"><strong>Standard Priority Parcel</strong></div>
       </div>
 
@@ -226,9 +337,9 @@
             <div class="step-dot">✓</div>
             <div class="step-text">Order Processed</div>
           </div>
-          <div class="step active">
-            <div class="step-dot">2</div>
-            <div class="step-text">Delivery Pending</div>
+          <div class="step hold">
+            <div class="step-dot">!</div>
+            <div class="step-text">Payment Incomplete</div>
           </div>
           <div class="step">
             <div class="step-dot">3</div>
@@ -237,26 +348,47 @@
         </div>
       </div>
 
-      <!-- Status Description -->
-      <div class="status-box">
-        <div class="status-box-title">Current Shipment Status: Delivery Pending</div>
-        <div class="status-box-desc">
-          Your shipment has arrived at the regional sorting facility and is currently awaiting final carrier dispatch. Delivery will be scheduled for the next available route window.
+      <!-- Payment Hold Notice -->
+      <div class="payment-alert">
+        <div class="payment-alert-title">Delivery Pending — Payment Incomplete</div>
+        <div class="payment-alert-desc">
+          Your package has arrived at the regional distribution hub, but final carrier dispatch is currently on hold due to an incomplete payment balance. Delivery will resume once payment is finalized.
         </div>
       </div>
 
       <!-- Recipient Details -->
       <div class="grid">
-        <div class="section">
+        <div>
           <div class="label">Recipient Full Name</div>
-          <div class="value">Robert Bliven</div>
+          <div class="value"><strong>Robert Bliven</strong></div>
         </div>
 
-        <div class="section">
+        <div>
           <div class="label">Delivery Address</div>
           <div class="value">610 N Lake St</div>
         </div>
       </div>
+
+      <!-- Scan History -->
+      <div class="history-title">Shipment Scan History</div>
+      <div class="timeline">
+        <div class="timeline-item alert">
+          <div class="timeline-status">Hold Placed — Payment Incomplete</div>
+          <div class="timeline-meta">Regional Distribution Center • Awaiting Balance Clearance</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-status">Arrived at Sorting Facility</div>
+          <div class="timeline-meta">Regional Distribution Center • In Transit</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-status">Shipment Information Received</div>
+          <div class="timeline-meta">Origin Dispatch Hub • Label Created</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Express Delivery Services • Faster • Safer • Always On Time
     </div>
   </div>
 
