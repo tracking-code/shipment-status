@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipment Tracking - #TRK-84920419</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .tracking-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 620px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 24px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .tracking-number {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .status-badge {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 1rem;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+
+    .status-box {
+      background: #f8fafc;
+      border-left: 4px solid #f59e0b;
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 24px;
+    }
+
+    .status-box-title {
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    .status-box-desc {
+      font-size: 0.9rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* Progress Tracker */
+    .progress-container {
+      margin: 28px 0;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .progress-steps::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 12px;
+      left: 0;
+      width: 50%;
+      height: 3px;
+      background: #f59e0b;
+      z-index: 2;
+    }
+
+    .step {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      width: 33.33%;
+    }
+
+    .step-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #64748b;
+    }
+
+    .step.completed .step-dot {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .step.active .step-dot {
+      background: #f59e0b;
+      color: #fff;
+      box-shadow: 0 0 0 4px #fef3c7;
+    }
+
+    .step-text {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #475569;
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tracking-card">
+    <div class="header">
+      <div>
+        <h1>Package Tracking</h1>
+        <div class="tracking-number">Tracking ID: #TRK-84920419</div>
+      </div>
+      <div class="status-badge">Delivery Pending</div>
+    </div>
+
+    <div class="content">
+      <!-- Package Information -->
+      <div class="section">
+        <div class="label">Package Name</div>
+        <div class="value"><strong>Standard Priority Parcel</strong></div>
+      </div>
+
+      <!-- Visual Progress Bar -->
+      <div class="progress-container">
+        <div class="progress-steps">
+          <div class="progress-line"></div>
+          <div class="step completed">
+            <div class="step-dot">✓</div>
+            <div class="step-text">Order Processed</div>
+          </div>
+          <div class="step active">
+            <div class="step-dot">2</div>
+            <div class="step-text">Delivery Pending</div>
+          </div>
+          <div class="step">
+            <div class="step-dot">3</div>
+            <div class="step-text">Delivered</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Description -->
+      <div class="status-box">
+        <div class="status-box-title">Current Shipment Status: Delivery Pending</div>
+        <div class="status-box-desc">
+          Your shipment has arrived at the regional sorting facility and is currently awaiting final carrier dispatch. Delivery will be scheduled for the next available route window.
+        </div>
+      </div>
+
+      <!-- Recipient Details -->
+      <div class="grid">
+        <div class="section">
+          <div class="label">Recipient Full Name</div>
+          <div class="value">Robert Bliven</div>
+        </div>
+
+        <div class="section">
+          <div class="label">Delivery Address</div>
+          <div class="value">610 N Lake St</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
