@@ -148,15 +148,19 @@
 <body>
   <div class="card">
     <div class="header">
-      <div class="badge">In Transit • 1 Hour Away</div>
+      <div class="badge">In Transit / Pending • 1 Hour Away</div>
       <h1>Shipment Tracking — Robert Bliven</h1>
-      <p>Updated: November 26, 2026 • Destination: 610 N Lake St, Carlsbad</p>
+      <p>Tracking #: TRK-849206-CB • Updated: November 27, 2026</p>
     </div>
 
     <div class="body">
       <div class="row">
         <span class="label">Date</span>
-        <span class="value">November 26, 2026</span>
+        <span class="value">November 27, 2026</span>
+      </div>
+      <div class="row">
+        <span class="label">Tracking Number</span>
+        <span class="value">TRK-849206-CB</span>
       </div>
       <div class="row">
         <span class="label">Recipient</span>
@@ -168,7 +172,7 @@
       </div>
       <div class="row">
         <span class="label">Delivery Status</span>
-        <span class="value" id="deliveryStatusText">1 hour away from the destination address</span>
+        <span class="value" id="deliveryStatusText">In Transit / Pending — 1 hour away from the destination address</span>
       </div>
       <div class="row">
         <span class="label">Last Deposited Payment</span>
@@ -180,10 +184,10 @@
       </div>
 
       <div class="deposit-box">
-        <div class="deposit-title">Last Deposited Payment • November 26, 2026</div>
+        <div class="deposit-title">Last Deposited Payment • November 27, 2026</div>
         <div class="deposit-amount">$145.00</div>
         <div class="status-note" id="incompleteNote">
-          Last deposited payment: $145.00. Payment is not yet complete — complete payment now to get the delivery moving to 610 N Lake St, Carlsbad (1 hour away from the destination address).
+          Last deposited payment: $145.00. Delivery is currently in transit / pending (1 hour away from 610 N Lake St, Carlsbad) — complete payment now to get the delivery moving.
         </div>
         <button class="btn" onclick="completePayment()">Complete Payment Now to Get the Delivery Moving</button>
         <div class="msg" id="actionMsg"></div>
@@ -194,10 +198,10 @@
   <script>
     function completePayment() {
       document.getElementById("paymentStatusText").textContent = "Complete Payment (Updated)";
-      document.getElementById("deliveryStatusText").textContent = "1 hour away from the destination address — Delivery Moving";
-      document.getElementById("incompleteNote").textContent = "Payment completed on November 26, 2026. Delivery is moving and 1 hour away from 610 N Lake St, Carlsbad.";
+      document.getElementById("deliveryStatusText").textContent = "In Transit — Moving to 610 N Lake St, Carlsbad (1 hour away)";
+      document.getElementById("incompleteNote").textContent = "Payment completed on November 27, 2026 for Tracking #TRK-849206-CB. Delivery is moving and 1 hour away from 610 N Lake St, Carlsbad.";
       document.getElementById("incompleteNote").style.color = "#047857";
-      document.getElementById("actionMsg").textContent = "Updated: Complete Payment selected for Robert Bliven (November 26, 2026).";
+      document.getElementById("actionMsg").textContent = "Updated: Complete Payment recorded for Robert Bliven (Tracking #TRK-849206-CB • November 27, 2026).";
     }
   </script>
 </body>
