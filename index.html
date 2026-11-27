@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shipment & Payment Status — Robert Bliven</title>
+  <title>Shipment Tracking — TRK-849206-CB</title>
   <style>
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-soft: #64748b;
+      --border: #e2e8f0;
+      --accent: #0f766e;
+      --accent-hover: #115e59;
+      --warn-bg: #fffbeb;
+      --warn-border: #fde68a;
+      --warn-text: #92400e;
+      --ok-bg: #ecfdf5;
+      --ok-border: #a7f3d0;
+      --ok-text: #065f46;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,195 +31,358 @@
     }
 
     body {
-      background: #0f172a;
-      color: #0f172a;
+      background: var(--bg);
+      color: var(--text-main);
       min-height: 100vh;
-      padding: 20px;
+      padding: 24px 16px;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
     }
 
-    .card {
+    .container {
       width: 100%;
-      max-width: 540px;
-      background: #ffffff;
-      border-radius: 14px;
+      max-width: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
       overflow: hidden;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
     }
 
-    .header {
-      background: #1e293b;
-      color: #ffffff;
+    .top-bar {
       padding: 20px 24px;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #fef3c7;
-      color: #92400e;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-
-    .header h1 {
-      font-size: 1.25rem;
-      margin-bottom: 4px;
-    }
-
-    .header p {
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      line-height: 1.4;
-    }
-
-    .body {
-      padding: 24px;
-    }
-
-    .row {
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #e2e8f0;
+      align-items: flex-start;
       gap: 12px;
     }
 
-    .label {
-      font-size: 0.85rem;
-      color: #64748b;
-      font-weight: 600;
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
     }
 
-    .value {
-      font-size: 0.92rem;
+    .tracking-id {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .date-stamp {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .section {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .status-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .pill {
+      font-size: 0.74rem;
       font-weight: 700;
-      color: #0f172a;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--warn-bg);
+      color: var(--warn-text);
+      border: 1px solid var(--warn-border);
+      white-space: nowrap;
+    }
+
+    .status-sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .progress-wrap {
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      position: relative;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 50%;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .milestone-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      color: var(--text-soft);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .milestone-labels .active {
+      color: var(--warn-text);
+      font-weight: 700;
+    }
+
+    .milestone-labels .done {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .detail-row:first-child {
+      padding-top: 0;
+    }
+
+    .detail-label {
+      font-size: 0.84rem;
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    .detail-value {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      font-weight: 700;
       text-align: right;
     }
 
-    .deposit-box {
-      margin-top: 18px;
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
+    .payment-panel {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 16px;
     }
 
-    .deposit-title {
+    .payment-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .payment-label {
       font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: #334155;
-      margin-bottom: 6px;
+      color: var(--text-muted);
     }
 
-    .deposit-amount {
-      font-size: 1.5rem;
+    .payment-amount {
+      font-size: 1.35rem;
       font-weight: 800;
-      color: #0f766e;
-      margin-bottom: 4px;
+      color: var(--text-main);
     }
 
-    .status-note {
+    .payment-note {
       font-size: 0.84rem;
-      color: #b45309;
-      font-weight: 600;
+      color: var(--warn-text);
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.45;
       margin-bottom: 14px;
-      line-height: 1.4;
+      font-weight: 500;
     }
 
     .btn {
       width: 100%;
       border: none;
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 0.95rem;
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 0.92rem;
       font-weight: 700;
-      background: #0f766e;
+      background: var(--accent);
       color: #ffffff;
       cursor: pointer;
+      transition: background 0.2s ease;
     }
 
     .btn:hover {
-      background: #115e59;
+      background: var(--accent-hover);
     }
 
-    .msg {
+    .btn:disabled {
+      background: #64748b;
+      cursor: default;
+    }
+
+    .confirm-banner {
+      display: none;
       margin-top: 12px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      color: #334155;
-      min-height: 20px;
-      line-height: 1.4;
+      color: var(--ok-text);
+      background: var(--ok-bg);
+      border: 1px solid var(--ok-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.45;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="header">
-      <div class="badge">In Transit / Pending • 1 Hour Away</div>
-      <h1>Shipment Tracking — Robert Bliven</h1>
-      <p>Tracking #: TRK-849206-CB • Updated: November 27, 2026</p>
-    </div>
+  <main class="container">
+    <header class="top-bar">
+      <div>
+        <div class="eyebrow">Shipment Tracking</div>
+        <div class="tracking-id">TRK-849206-CB</div>
+      </div>
+      <div class="date-stamp">November 27, 2026</div>
+    </header>
 
-    <div class="body">
-      <div class="row">
-        <span class="label">Date</span>
-        <span class="value">November 27, 2026</span>
+    <section class="section">
+      <div class="status-header">
+        <h1 class="status-title" id="mainStatusTitle">In Transit / Pending</h1>
+        <span class="pill" id="statusPill">Halfway • 50%</span>
       </div>
-      <div class="row">
-        <span class="label">Tracking Number</span>
-        <span class="value">TRK-849206-CB</span>
-      </div>
-      <div class="row">
-        <span class="label">Recipient</span>
-        <span class="value">Robert Bliven</span>
-      </div>
-      <div class="row">
-        <span class="label">Destination</span>
-        <span class="value">610 N Lake St, Carlsbad</span>
-      </div>
-      <div class="row">
-        <span class="label">Delivery Status</span>
-        <span class="value" id="deliveryStatusText">In Transit / Pending — 1 hour away from the destination address</span>
-      </div>
-      <div class="row">
-        <span class="label">Last Deposited Payment</span>
-        <span class="value">$145.00</span>
-      </div>
-      <div class="row">
-        <span class="label">Payment Status</span>
-        <span class="value" id="paymentStatusText">Incomplete</span>
-      </div>
+      <p class="status-sub" id="statusSubtext">
+        Stopped halfway — 1 hour away from the destination address (610 N Lake St, Carlsbad).
+      </p>
 
-      <div class="deposit-box">
-        <div class="deposit-title">Last Deposited Payment • November 27, 2026</div>
-        <div class="deposit-amount">$145.00</div>
-        <div class="status-note" id="incompleteNote">
-          Last deposited payment: $145.00. Delivery is currently in transit / pending (1 hour away from 610 N Lake St, Carlsbad) — complete payment now to get the delivery moving.
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressBar"></div>
         </div>
-        <button class="btn" onclick="completePayment()">Complete Payment Now to Get the Delivery Moving</button>
-        <div class="msg" id="actionMsg"></div>
+        <div class="milestone-labels">
+          <span class="done">Picked Up</span>
+          <span class="active" id="midMilestone">In Transit / Pending</span>
+          <span>Delivered</span>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <section class="section">
+      <div class="details-grid">
+        <div class="detail-row">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">November 27, 2026</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Tracking Number</span>
+          <span class="detail-value">TRK-849206-CB</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Recipient</span>
+          <span class="detail-value">Robert Bliven</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Destination</span>
+          <span class="detail-value">610 N Lake St, Carlsbad</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Delivery Status</span>
+          <span class="detail-value" id="deliveryRowValue">In Transit / Pending — 1 hour away from destination</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Last Deposited Payment</span>
+          <span class="detail-value">$145.00</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="payment-panel">
+        <div class="payment-top">
+          <span class="payment-label">Last Deposited Payment</span>
+          <span class="payment-amount">$145.00</span>
+        </div>
+        <p class="payment-note" id="paymentNote">
+          Last deposited payment is $145.00. Delivery is currently halfway (1 hour away from 610 N Lake St, Carlsbad) and in transit / pending.
+        </p>
+        <button type="button" class="btn" id="completeBtn" onclick="handleCompletePayment()">
+          Complete Payment Now to Get the Delivery Moving
+        </button>
+        <div class="confirm-banner" id="confirmBanner"></div>
+      </div>
+    </section>
+  </main>
 
   <script>
-    function completePayment() {
-      document.getElementById("paymentStatusText").textContent = "Complete Payment (Updated)";
-      document.getElementById("deliveryStatusText").textContent = "In Transit — Moving to 610 N Lake St, Carlsbad (1 hour away)";
-      document.getElementById("incompleteNote").textContent = "Payment completed on November 27, 2026 for Tracking #TRK-849206-CB. Delivery is moving and 1 hour away from 610 N Lake St, Carlsbad.";
-      document.getElementById("incompleteNote").style.color = "#047857";
-      document.getElementById("actionMsg").textContent = "Updated: Complete Payment recorded for Robert Bliven (Tracking #TRK-849206-CB • November 27, 2026).";
+    function handleCompletePayment() {
+      const btn = document.getElementById("completeBtn");
+      const pill = document.getElementById("statusPill");
+      const note = document.getElementById("paymentNote");
+      const banner = document.getElementById("confirmBanner");
+      const bar = document.getElementById("progressBar");
+      const mid = document.getElementById("midMilestone");
+      const deliveryRow = document.getElementById("deliveryRowValue");
+
+      bar.style.width = "75%";
+      pill.textContent = "Moving • 75%";
+      pill.style.background = "#ecfdf5";
+      pill.style.color = "#065f46";
+      pill.style.borderColor = "#a7f3d0";
+
+      mid.textContent = "Moving to Destination";
+      mid.className = "done";
+
+      deliveryRow.textContent = "In Transit — 1 hour away from destination (Moving)";
+
+      note.textContent = "Last deposited payment: $145.00. Payment completion recorded on November 27, 2026.";
+      note.style.background = "#f8fafc";
+      note.style.color = "#475569";
+      note.style.borderColor = "#e2e8f0";
+
+      banner.style.display = "block";
+      banner.textContent = "Complete Payment Now to Get the Delivery Moving — status updated for Robert Bliven (TRK-849206-CB • November 27, 2026).";
+
+      btn.textContent = "Payment Completed";
+      btn.disabled = true;
     }
   </script>
 </body>
